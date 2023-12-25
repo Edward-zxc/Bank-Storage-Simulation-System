@@ -1,0 +1,9 @@
+# ninja log v5
+2	65	7252059570793428	2-LinkedList/CMakeFiles/LinkedList.dir/LinkedList.c.obj	fa1cd6161893bc42
+65	128	7252059571387991	2-LinkedList/LinkedList.exe	c8c370aaf26595e
+1	141	7252066929699898	1-Struct-Array/CMakeFiles/StructWithArray.dir/StructWithArray.c.obj	f62de3f275b57b60
+141	214	7252066931134765	1-Struct-Array/StructWithArray.exe	cb1312e7cc15a9fd
+0	79	7252072389352074	2-LinkedList/CMakeFiles/LinkeList.dir/LinkeList.c.obj	ad29d6cca4258bab
+79	143	7252072389976617	2-LinkedList/LinkeList.exe	5592abdb5067a6c8
+3	76	7252075799831289	2-LinkedList/CMakeFiles/LinkeList.dir/LinkeList.c.obj	ad29d6cca4258bab
+76	140	7252075800439641	2-LinkedList/LinkeList.exe	5592abdb5067a6c8

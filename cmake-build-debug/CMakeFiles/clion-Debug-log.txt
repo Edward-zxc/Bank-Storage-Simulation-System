@@ -1,0 +1,4 @@
+D:\SoftWare\Toolbox\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=D:/SoftWare/Toolbox/CLion/bin/ninja/win/x64/ninja.exe -G Ninja -S "D:\Course\DataStructure-C\Bank Storage Simulation System" -B "D:\Course\DataStructure-C\Bank Storage Simulation System\cmake-build-debug"
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: D:/Course/DataStructure-C/Bank Storage Simulation System/cmake-build-debug

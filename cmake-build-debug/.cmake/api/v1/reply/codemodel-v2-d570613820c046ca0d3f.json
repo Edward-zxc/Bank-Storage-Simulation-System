@@ -1,0 +1,101 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "1-Struct-Array",
+					"jsonFile" : "directory-1-Struct-Array-Debug-8ffc9b10b88c2c2e87b7.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "1-Struct-Array",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "2-LinkedList",
+					"jsonFile" : "directory-2-LinkedList-Debug-02a61f6e2aa42699170e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "2-LinkedList",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "Bank-Storage-Simulation-System",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 2,
+					"id" : "LinkeList::@fdbd18ffe2061b305944",
+					"jsonFile" : "target-LinkeList-Debug-cabecff5c851c7b7ec16.json",
+					"name" : "LinkeList",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "StructWithArray::@f93feb29e326bac94a76",
+					"jsonFile" : "target-StructWithArray-Debug-d51707ab0107c8063995.json",
+					"name" : "StructWithArray",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/Course/DataStructure-C/Bank Storage Simulation System/cmake-build-debug",
+		"source" : "D:/Course/DataStructure-C/Bank Storage Simulation System"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}
