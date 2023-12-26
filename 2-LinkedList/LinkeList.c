@@ -10,6 +10,7 @@ typedef struct Account {
     int accountNumber;
     char accountHolder[50];
     double balance;
+    char password[50];
     struct Account *next;
 } Account;
 
@@ -20,14 +21,18 @@ Account *head = NULL;
 
 // Function prototypes
 void showMenu();
-void createAccount();
+//client
+void createNewClientAccount();// Create new account
+void loginClientAccount();// Login client account
 void displayAccountsDetails();
 void displayAccountDetailsByNumber();
 void displayAccountDetailsByName();
 void deposit();
 void withdraw();
-void deleteAccount();
 void exitProgram();
+//admin
+void loginAdminAccount();
+void deleteAccount();
 
 int main() {
     char choice;
@@ -35,23 +40,40 @@ int main() {
         showMenu();
         printf("Enter your choice: ");
         scanf(" %c", &choice);
-        switch (choice) {
+       switch(choice) {
             case '1':
-                createAccount();
+                loginClientAccount();
+               switch (choice) {
+                   case '1':
+                       displayAccountsDetails();
+                       break;
+                       case '2':
+                       deposit();
+                       break;
+                       case '3':
+                       withdraw();
+                       break;
+                        case '4':
+                       exitProgram();
+                       break;
+                   default:
+                       printf("Invalid choice. Please try again.\n");
+               }
                 break;
             case '2':
-                displayAccountsDetails();
+                createNewClientAccount();
                 break;
             case '3':
-                deposit();
-                break;
+               loginAdminAccount();
+               switch (choice) {
+                   case '1':
+                       deleteAccount();
+                       break;
+                   default:
+                       printf("Invalid choice. Please try again.\n");
+               }
+               break;
             case '4':
-                withdraw();
-                break;
-            case '5':
-                deleteAccount();
-                break;
-            case '6':
                 exitProgram();
                 break;
             default:
@@ -61,23 +83,28 @@ int main() {
     return 0;
 }
 
+
 // Main menu
 void showMenu() {
-    printf("\n\n");
-    printf("1. Create new account\n");
-    printf("2. Display account details\n");
-    printf("3. Deposit\n");
-    printf("4. Withdraw\n");
-    printf("5. Delete account\n");
-    printf("6. Exit\n");
+    printf("\n");
+    printf("Welcome to the banking system.\n");
+    printf("1. Login client account\n");
+    printf("2. Create new client account\n");
+    printf("3. Login admin account\n");
+    printf("4. Exit\n");
+    printf("\n");
 }
+
+//client
 // Create new account
-void createAccount() {
+void createNewClientAccount() {
     Account *newAccount = (Account *) malloc(sizeof(Account));
     printf("Enter account number: ");
     scanf("%d", &newAccount->accountNumber);
     printf("Enter account holder name: ");
     scanf("%s", newAccount->accountHolder);
+    printf("Enter your password: ");
+    scanf("%s", newAccount->password);
     printf("Enter opening balance: ");
     scanf("%lf", &newAccount->balance);
     newAccount->next = NULL;
@@ -91,6 +118,25 @@ void createAccount() {
         current->next = newAccount;
     }
     printf("Account created successfully.\n");
+}
+void loginClientAccount() {
+    int accountNumber;
+    char accountHolder[50];
+    printf("Enter account number: ");
+    scanf("%d", &accountNumber);
+    printf("Enter account holder name: ");
+    scanf("%s", accountHolder);
+    printf("Enter your password: ");
+    scanf("%s", accountHolder);
+    Account *current = head;
+    while (current != NULL) {
+        if (current->accountNumber == accountNumber && strcmp(current->accountHolder, accountHolder) == 0) {
+            printf("Login successful.\n");
+            return;
+        }
+        current = current->next;
+    }
+    printf("Invalid account number or account holder name.\n");
 }
 // Display account details
 void displayAccountsDetails() {
@@ -195,6 +241,31 @@ void withdraw() {
     }
     printf("Account not found.\n");
 }
+// Exit program
+void exitProgram() {
+    Account *current = head;
+    while (current != NULL) {
+        Account *temp = current->next;
+        free(current);
+        current = temp;
+    }
+    printf("Program terminated.\n");
+}
+//admin
+// Login admin account
+void loginAdminAccount() {
+    char username[50];
+    char password[50];
+    printf("Enter username: ");
+    scanf("%s", username);
+    printf("Enter password: ");
+    scanf("%s", password);
+    if (strcmp(username, "admin") == 0 && strcmp(password, "admin") == 0) {
+        printf("Login successful.\n");
+    } else {
+        printf("Invalid username or password.\n");
+    }
+}
 // Delete account
 void deleteAccount() {
     int accountNumber;
@@ -218,13 +289,4 @@ void deleteAccount() {
     }
     printf("Account not found.\n");
 }
-// Exit program
-void exitProgram() {
-    Account *current = head;
-    while (current != NULL) {
-        Account *temp = current->next;
-        free(current);
-        current = temp;
-    }
-    printf("Program terminated.\n");
-}
+
