@@ -1,310 +1,288 @@
-//
-// Created by zhou with zhu on 2023/12/25.
-//
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Define a struct for the linked list
-typedef struct Account {
-    int accountNumber;
-    char accountHolder[50];
+// 定义用户结构体
+typedef struct Node {
+    char username[50];
+    int account_number;
     double balance;
-    char password[50];
-    struct Account *next;
-} Account;
+    char password[20];
+    struct Node* next;
+} UserNode;
 
-// Define a global variable to store the head of the linked list
-// This variable is accessible from all functions
-// The head is the first node of the linked list
-Account *head = NULL;
+// 全局链表头指针
+UserNode* head = NULL;
 
-// Function prototypes
-void showMenu();
-//client
-void createNewClientAccount();// Create new account
-void loginClientAccount();// Login client account
-void displayAccountsDetailsAfterLogin();
-void displayAccountDetailsByNumberAfterLogin();
-void displayAccountDetailsByNameAfterLogin();
-void depositAfterLogin();
-void withdrawAfterLogin();
-void transferAfterLogin();
-void exitProgram();
+// 函数声明
+void login();
+void createNewUser();
+void withdraw(UserNode* userNode);
+void deposit(UserNode* userNode);
+void transfer(UserNode* senderNode);
+void displayBalance(UserNode* userNode);
+void queryUser();
+void userMenu(UserNode* userNode);
 
-//admin
-void loginAdminAccount();
-void deleteAccount();
-
+// 主函数
 int main() {
-    char choice;
-    do {
-        showMenu();
+    int choice;
+
+    while (1) {
+        printf("\nBank Management System\n");
+        printf("1. Login\n");
+        printf("2. Create New User\n");
+        printf("3. Exit\n");
         printf("Enter your choice: ");
-        scanf(" %c", &choice);
-       switch(choice) {
-            case '1':
-                loginClientAccount();
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                login();
                 break;
-            case '2':
-                createNewClientAccount();
+            case 2:
+                createNewUser();
                 break;
-            case '3':
-               loginAdminAccount();
-               switch (choice) {
-                   case '1':
-                       deleteAccount();
-                       break;
-                   default:
-                       printf("Invalid choice. Please try again.\n");
-               }
-               break;
-            case '4':
-                exitProgram();
-                break;
+            case 3:
+                printf("Exiting program. Goodbye!\n");
+                exit(0);
             default:
                 printf("Invalid choice. Please try again.\n");
         }
-    } while (choice != '0');
+    }
+
     return 0;
 }
 
-
-// Main menu
-void showMenu() {
-    printf("\n");
-    printf("Welcome to the banking system.\n");
-    printf("1. Login client account\n");
-    printf("2. Create new client account\n");
-    printf("3. Login admin account\n");
-    printf("4. Exit\n");
-    printf("\n");
-}
-
-//client
-// Create new account
-void createNewClientAccount() {
-    Account *newAccount = (Account *) malloc(sizeof(Account));
-    printf("Enter account number: ");
-    scanf("%d", &newAccount->accountNumber);
-    printf("Enter account holder name: ");
-    scanf("%s", newAccount->accountHolder);
-    printf("Enter your password: ");
-    scanf("%s", newAccount->password);
-    printf("Enter opening balance: ");
-    scanf("%lf", &newAccount->balance);
-    newAccount->next = NULL;
-    if (head == NULL) {
-        head = newAccount;
-    } else {
-        Account *current = head;
-        while (current->next != NULL) {
-            current = current->next;
-        }
-        current->next = newAccount;
-    }
-    printf("Account created successfully.\n");
-}
-void loginClientAccount() {
+// 登录函数
+void login() {
+    int loginChoice;
+    char username[50];
     int accountNumber;
-    char password[50];
-    printf("Enter account number: ");
-    scanf("%d", &accountNumber);
-    printf("Enter your password: ");
-    scanf("%s", password);
-    Account *current = head;
-    while (current != NULL) {
-        if (current->accountNumber == accountNumber && strcmp(current->password, password) == 0) {
-            printf("Login successful.\n");
-            return;
-        }
-        current = current->next;
-    }
-    printf("Invalid account number or password.\n");
-}
+    char password[20];
 
-// Display account details
-void displayAccountsDetails() {
-   if(!head){
-       printf("No account found.\n");
-       return;
-   }
-    int choice;
-    printf("1. Display all accounts\n");
-    printf("2. Display account by account number\n");
-    printf("3. Display account by account holder name\n");
+    printf("\nLogin Options\n");
+    printf("1. Username and Password\n");
+    printf("2. Account Number and Password\n");
     printf("Enter your choice: ");
-    scanf("%d", &choice);
-    switch (choice) {
-        case 1:
-            displayAccountsDetails();
-            break;
-        case 2:
-            displayAccountDetailsByNumberAfterLogin();
-            break;
-        case 3:
-            displayAccountDetailsByNameAfterLogin();
-            break;
-        default:
-            printf("Invalid choice. Please try again.\n");
+    scanf("%d", &loginChoice);
+
+    if (loginChoice == 1) {
+        printf("Enter Username: ");
+        scanf("%s", username);
+    } else if (loginChoice == 2) {
+        printf("Enter Account Number: ");
+        scanf("%d", &accountNumber);
+    } else {
+        printf("Invalid choice. Please try again.\n");
+        return;
     }
-}
-// Display account details by account number
-void displayAccountDetailsByNumberAfterLogin() {
-    int accountNumber;
-    printf("Enter account number: ");
-    scanf("%d", &accountNumber);
-    Account *current = head;
-    while (current != NULL) {
-        if (current->accountNumber == accountNumber) {
-            printf("Account number: %d\n", current->accountNumber);
-            printf("Account holder name: %s\n", current->accountHolder);
-            printf("Balance: %.2lf\n", current->balance);
-            return;
-        }
-        current = current->next;
-    }
-    printf("Account not found.\n");
-}
-// Display account details by account holder name
-void displayAccountDetailsByNameAfterLogin() {
-    char accountHolder[50];
-    printf("Enter account holder name: ");
-    scanf("%s", accountHolder);
-    Account *current = head;
-    while (current != NULL) {
-        if (strcmp(current->accountHolder, accountHolder) == 0) {
-            printf("Account number: %d\n", current->accountNumber);
-            printf("Account holder name: %s\n", current->accountHolder);
-            printf("Balance: %.2lf\n", current->balance);
-            return;
-        }
-        current = current->next;
-    }
-    printf("Account not found.\n");
-}
-// Deposit
-void depositAfterLogin() {
-    int accountNumber;
-    double amount;
-    printf("Enter account number: ");
-    scanf("%d", &accountNumber);
-    printf("Enter amount to deposit: ");
-    scanf("%lf", &amount);
-    Account *current = head;
-    while (current != NULL) {
-        if (current->accountNumber == accountNumber) {
-            current->balance += amount;
-            printf("Deposit successful.\n");
-            return;
-        }
-        current = current->next;
-    }
-    printf("Account not found.\n");
-}
-// Withdraw
-void withdrawAfterLogin() {
-    int accountNumber;
-    double amount;
-    printf("Enter account number: ");
-    scanf("%d", &accountNumber);
-    printf("Enter amount to withdraw: ");
-    scanf("%lf", &amount);
-    Account *current = head;
-    while (current != NULL) {
-        if (current->accountNumber == accountNumber) {
-            if (current->balance >= amount) {
-                current->balance -= amount;
-                printf("Withdraw successful.\n");
+
+    printf("Enter Password: ");
+    scanf("%s", password);
+
+    UserNode* currentUser = head;
+
+    while (currentUser != NULL) {
+        if ((loginChoice == 1 && strcmp(currentUser->username, username) == 0) ||
+            (loginChoice == 2 && currentUser->account_number == accountNumber)) {
+            if (strcmp(currentUser->password, password) == 0) {
+                printf("Login successful. Welcome, %s!\n", currentUser->username);
+                // 进入用户操作菜单
+                userMenu(currentUser);
                 return;
             } else {
-                printf("Insufficient balance.\n");
+                printf("Invalid password.\n");
                 return;
             }
         }
-        current = current->next;
+        currentUser = currentUser->next;
     }
-    printf("Account not found.\n");
-}
-// Exit program
-void exitProgram() {
-    Account *current = head;
-    while (current != NULL) {
-        Account *temp = current->next;
-        free(current);
-        current = temp;
-    }
-    printf("Program terminated.\n");
-}
-void transferAfterLogin(){
-    int accountNumber;
-    double amount;
-    printf("Enter account number: ");
-    scanf("%d", &accountNumber);
-    printf("Enter amount to transfer: ");
-    scanf("%lf", &amount);
-    Account *current = head;
-    while (current != NULL) {
-        if (current->accountNumber == accountNumber) {
-            if (current->balance >= amount) {
-                current->balance -= amount;
-                printf("Transfer successful.\n");
-                return;
-            } else {
-                printf("Insufficient balance.\n");
-                return;
-            }
-        }
-        current = current->next;
-    }
-    printf("Account not found.\n");
+
+    printf("Login failed. Invalid username, account number, or password.\n");
 }
 
-//admin
-// Login admin account
-    void loginAdminAccount() {
-        char password[50];
-        printf("Enter admin password: ");
+// 新建用户函数
+void createNewUser() {
+    UserNode* newUser = (UserNode*)malloc(sizeof(UserNode));
+
+    printf("\nEnter Username: ");
+    scanf("%s", newUser->username);
+    printf("Enter Account Number: ");
+    scanf("%d", &newUser->account_number);
+    printf("Enter Initial Balance: ");
+    scanf("%lf", &newUser->balance);
+    printf("Enter Password: ");
+    scanf("%s", newUser->password);
+
+    // 将新用户添加到链表头
+    newUser->next = head;
+    head = newUser;
+
+    printf("User created successfully. Welcome, %s!\n", newUser->username);
+}
+
+// 取钱函数
+void withdraw(UserNode* userNode) {
+    double amount;
+
+    printf("\nEnter amount to withdraw: ");
+    scanf("%lf", &amount);
+
+    if (amount > 0 && amount <= userNode->balance) {
+        userNode->balance -= amount;
+        printf("Withdrawal successful. Updated balance: %.2f\n", userNode->balance);
+    } else {
+        printf("Invalid withdrawal amount or insufficient balance.\n");
+    }
+}
+
+// 存钱函数
+void deposit(UserNode* userNode) {
+    double amount;
+
+    printf("\nEnter amount to deposit: ");
+    scanf("%lf", &amount);
+
+    if (amount > 0) {
+        userNode->balance += amount;
+        printf("Deposit successful. Updated balance: %.2f\n", userNode->balance);
+    } else {
+        printf("Invalid deposit amount.\n");
+    }
+}
+
+// 转账函数
+void transfer(UserNode* senderNode) {
+    int targetAccountNumber;
+    double amount;
+
+    printf("\nEnter target account number: ");
+    scanf("%d", &targetAccountNumber);
+
+    UserNode* targetNode = head;
+
+    while (targetNode != NULL) {
+        if (targetNode->account_number == targetAccountNumber) {
+            printf("Enter amount to transfer: ");
+            scanf("%lf", &amount);
+
+            if (amount > 0 && amount <= senderNode->balance) {
+                senderNode->balance -= amount;
+                targetNode->balance += amount;
+                printf("Transfer successful. Updated balance: %.2f\n", senderNode->balance);
+            } else {
+                printf("Invalid transfer amount or insufficient balance.\n");
+            }
+            return;
+        }
+        targetNode = targetNode->next;
+    }
+
+    printf("Target account not found.\n");
+}
+
+// 查询余额函数
+void displayBalance(UserNode* userNode) {
+    printf("Current Balance: %.2f\n", userNode->balance);
+}
+
+// 查询用户函数
+void queryUser() {
+    int queryChoice;
+    char username[50];
+    int accountNumber;
+    char password[20];
+
+    printf("\nQuery Options\n");
+    printf("1. Query by Username and Password\n");
+    printf("2. Query by Account Number and Password\n");
+    printf("Enter your choice: ");
+    scanf("%d", &queryChoice);
+
+    UserNode* queryUser = NULL;
+
+    if (queryChoice == 1) {
+        printf("Enter Username: ");
+        scanf("%s", username);
+        printf("Enter Password: ");
         scanf("%s", password);
-        if (strcmp(password, "admin") == 0) {
-            int adminChoice;
-            printf("1. Delete account\n");
-            printf("Enter your choice: ");
-            scanf("%d", &adminChoice);
 
-            switch (adminChoice) {
-                case 1:
-                    deleteAccount();
-                    break;
-                default:
-                    printf("Invalid choice. Please try again.\n");
+        UserNode* currentUser = head;
+
+        while (currentUser != NULL) {
+            if (strcmp(currentUser->username, username) == 0 && strcmp(currentUser->password, password) == 0) {
+                queryUser = currentUser;
+                break;
             }
-        } else {
-            printf("Invalid admin password.\n");
+            currentUser = currentUser->next;
         }
+    } else if (queryChoice == 2) {
+        printf("Enter Account Number: ");
+        scanf("%d", &accountNumber);
+        printf("Enter Password: ");
+        scanf("%s", password);
+
+        UserNode* currentUser = head;
+
+        while (currentUser != NULL) {
+            if (currentUser->account_number == accountNumber && strcmp(currentUser->password, password) == 0) {
+                queryUser = currentUser;
+                break;
+            }
+            currentUser = currentUser->next;
+        }
+    } else {
+        printf("Invalid choice. Please try again.\n");
+        return;
     }
 
-// Delete account
-void deleteAccount() {
-    int accountNumber;
-    printf("Enter account number: ");
-    scanf("%d", &accountNumber);
-    Account *current = head;
-    Account *previous = NULL;
-    while (current != NULL) {
-        if (current->accountNumber == accountNumber) {
-            if (previous == NULL) {
-                head = current->next;
-            } else {
-                previous->next = current->next;
-            }
-            free(current);
-            printf("Account deleted successfully.\n");
-            return;
-        }
-        previous = current;
-        current = current->next;
+    if (queryUser != NULL) {
+        printf("Query successful. User Details:\n");
+        printf("Username: %s\n", queryUser->username);
+        printf("Account Number: %d\n", queryUser->account_number);
+        printf("Balance: %.2f\n", queryUser->balance);
+    } else {
+        printf("User not found.\n");
     }
-    printf("Account not found.\n");
 }
 
+// 用户操作菜单
+void userMenu(UserNode* userNode) {
+    int choice;
+
+    while (1) {
+        printf("\nUser Menu\n");
+        printf("1. Withdraw\n");
+        printf("2. Deposit\n");
+        printf("3. Transfer\n");
+        printf("4. Display Balance\n");
+        printf("5. Query User\n");
+        printf("6. Logout\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                withdraw(userNode);
+                break;
+            case 2:
+                deposit(userNode);
+                break;
+            case 3:
+                transfer(userNode);
+                break;
+            case 4:
+                displayBalance(userNode);
+                break;
+            case 5:
+                queryUser();
+                break;
+            case 6:
+                printf("Logout successful. Goodbye, %s!\n", userNode->username);
+                return;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+}
