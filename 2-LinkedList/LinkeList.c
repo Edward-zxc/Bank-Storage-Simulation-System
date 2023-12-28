@@ -108,8 +108,32 @@ void createNewUser() {
 
     printf("\nEnter Username: ");
     scanf("%s", newUser->username);
+
+    // Check if the username already exists
+    UserNode* existingUser = head;
+    while (existingUser != NULL) {
+        if (strcmp(existingUser->username, newUser->username) == 0) {
+            printf("Username already exists. Please choose a different username.\n");
+            free(newUser);
+            return;
+        }
+        existingUser = existingUser->next;
+    }
+
     printf("Enter Account Number: ");
     scanf("%d", &newUser->account_number);
+
+    // Check if the account number already exists
+    existingUser = head;
+    while (existingUser != NULL) {
+        if (existingUser->account_number == newUser->account_number) {
+            printf("Account number already exists. Please choose a different account number.\n");
+            free(newUser);
+            return;
+        }
+        existingUser = existingUser->next;
+    }
+
     printf("Enter Initial Balance: ");
     scanf("%lf", &newUser->balance);
     printf("Enter Password: ");
@@ -121,6 +145,8 @@ void createNewUser() {
 
     printf("User created successfully. Welcome, %s!\n", newUser->username);
 }
+
+
 
 // 取钱函数
 void withdraw(UserNode* userNode) {
