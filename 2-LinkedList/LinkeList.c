@@ -8,6 +8,7 @@ typedef struct Node {
     int account_number;
     double balance;
     char password[20];
+
     struct Node* next;
 } UserNode;
 
@@ -123,7 +124,7 @@ void createNewUser() {
     printf("Enter Account Number: ");
     scanf("%d", &newUser->account_number);
 
-    // Check if the account number already exists
+    // Check if the account number already exists验证账号是否已经存在
     existingUser = head;
     while (existingUser != NULL) {
         if (existingUser->account_number == newUser->account_number) {
@@ -145,8 +146,6 @@ void createNewUser() {
 
     printf("User created successfully. Welcome, %s!\n", newUser->username);
 }
-
-
 
 // 取钱函数
 void withdraw(UserNode* userNode) {
