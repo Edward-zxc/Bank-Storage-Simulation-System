@@ -137,8 +137,6 @@ void inputResultsAndCalculateScores() {
 
     printf("Scores calculated successfully!\n");
 }
-
-
 void queryScore() {
     int teamIndex, playerIndex;
     printf("Please enter the team index: ");
